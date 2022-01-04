@@ -33,10 +33,10 @@ class Help(commands.Cog):
         em = discord.Embed(title='Help `join` command', colour=discord.Colour.random(), description=d)
         await ctx.send(embed=em)
 
-    @help.command(aliases=['dc', 'dis', 'disconnect'])
+    @help.command(aliases=['dc', 'dis', 'disconnect', 'bye'])
     async def leave(self, ctx):
         d = f'When I\'m in **the same voice channel** with you, I\'ll **disconnect** from that voice channel\n\n' \
-            f'Note that all the queue(playlist) will be reset\n\n**Aliases:** `disconnect`, `dc`, `dis`'
+            f'Note that all the queue(playlist) will be reset\n\n**Aliases:** `disconnect`, `dc`, `dis`, `bye`'
         em = discord.Embed(title='Help `leave` command', colour=discord.Colour.random(), description=d)
         await ctx.send(embed=em)
 

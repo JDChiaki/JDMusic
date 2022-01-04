@@ -76,9 +76,9 @@ class Player(commands.Cog):
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
             'options': '-vn'
         }
-        source = await discord.FFmpegOpusAudio.from_probe(url, **ffmpeg_options)
+        source = discord.FFmpegPCMAudio(url, **ffmpeg_options)
+        source = discord.PCMVolumeTransformer(source, volume=0.1)
         ctx.voice_client.play(source, after=lambda error: self.bot.loop.create_task(self.check_queue(ctx)))
-        ctx.voice_client.source.volume = 0.2
         self.np[ctx.guild.id][0] = song
         self.np[ctx.guild.id][1] = ctx.author.id
         await ctx.send(f'**Now playing** :notes: `{paf.title}`')
@@ -113,7 +113,7 @@ class Player(commands.Cog):
         self.ctx[ctx.guild.id] = ctx
         await ctx.author.voice.channel.connect()
 
-    @commands.command(aliases=['dc', 'dis', 'disconnect'])
+    @commands.command(aliases=['dc', 'dis', 'disconnect', 'bye'])
     async def leave(self, ctx):
         if ctx.voice_client is None:
             return await ctx.send(':x: **I am not connected to a voice channel.**\n Type `^join` to get me in one')
@@ -345,7 +345,7 @@ class Player(commands.Cog):
                                                                          'I feels lonely** :crying_cat_face: ')
 
     @commands.command(aliases=['an'])
-    async def activenow(self, ctx):
+    async def activenow(self, _):
         for client in self.bot.voice_clients:
             await self.bot.get_channel(879365987860893739).send(client.guild)
 
@@ -354,6 +354,6 @@ class Player(commands.Cog):
         if int(count) > 10:
             await ctx.send(f'Are you crazy? I\'ll slap you {count} times!!')
             await ctx.send('https://c.tenor.com/AzIExqZBjNoAAAAC/anime-slap.gif')
-            return 
+            return
         for _ in range(int(count)):
             await ctx.send(mention)
